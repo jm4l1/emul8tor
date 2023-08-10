@@ -300,12 +300,14 @@ impl CPU {
             (_, _, _, _) => unimplemented!("opcode {:04x}", opcode),
         }
     }
-    pub fn tick_timers(&mut self) {
+    pub fn tick_timers(&mut self, sound_timer_done: &mut bool) {
         if self.delay_timer > 0 {
             self.delay_timer -= 1;
         }
         if self.sound_timer > 0 {
-            if self.sound_timer == 1 {}
+            if self.sound_timer == 1 {
+                *sound_timer_done = true;
+            }
             self.sound_timer -= 1;
         }
     }

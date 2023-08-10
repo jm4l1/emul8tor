@@ -1,5 +1,6 @@
 extern crate sdl2;
 
+use sdl2::audio::{AudioCallback, AudioDevice, AudioSpecDesired};
 use sdl2::event::Event;
 use sdl2::keyboard::Keycode;
 use sdl2::pixels::Color;
@@ -8,11 +9,34 @@ use sdl2::render::Canvas;
 use sdl2::video::Window;
 use sdl2::EventPump;
 
+struct SquareWave {
+    phase_inc: f32,
+    phase: f32,
+    volume: f32,
+}
+
+impl AudioCallback for SquareWave {
+    type Channel = f32;
+
+    fn callback(&mut self, out: &mut [f32]) {
+        // Generate a square wave
+        for x in out.iter_mut() {
+            *x = if self.phase <= 0.5 {
+                self.volume
+            } else {
+                -self.volume
+            };
+            self.phase = (self.phase + self.phase_inc) % 1.0;
+        }
+    }
+}
+
 const SCALE: u32 = 10;
 pub struct Peripheral {
     pump: EventPump,
     canvas: Canvas<Window>,
     screen_width: u32,
+    speaker: Option<AudioDevice<SquareWave>>,
 }
 
 fn key_to_input(key: Keycode) -> Option<usize> {
@@ -63,10 +87,40 @@ impl Peripheral {
             Ok(pump) => pump,
             Err(_) => panic!("Unable to create screen"),
         };
+
+        let speaker = match context.audio() {
+            Ok(audio_subsystem) => {
+                let desired_spec = AudioSpecDesired {
+                    freq: Some(44100),
+                    channels: Some(1), // mono
+                    samples: None,     // default sample size
+                };
+                match audio_subsystem.open_playback(None, &desired_spec, |spec| {
+                    // initialize the audio callback
+                    SquareWave {
+                        phase_inc: 440.0 / spec.freq as f32,
+                        phase: 0.0,
+                        volume: 0.25,
+                    }
+                }) {
+                    Ok(speaker) => Some(speaker),
+                    Err(err) => {
+                        eprintln!("unable to initialize sound {}", err);
+                        None
+                    }
+                }
+            }
+            Err(err) => {
+                eprintln!("unable to initialize sound {}", err);
+                None
+            }
+        };
+
         Self {
             canvas,
             pump,
             screen_width,
+            speaker,
         }
     }
     pub fn handle_event(
@@ -123,5 +177,12 @@ impl Peripheral {
     }
     pub fn present(&mut self) {
         self.canvas.present();
+    }
+    pub fn beep(&self) {
+        if self.speaker.is_some() {
+            self.speaker.as_ref().unwrap().resume();
+            std::thread::sleep(std::time::Duration::from_millis(50));
+            self.speaker.as_ref().unwrap().pause();
+        }
     }
 }

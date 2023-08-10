@@ -1,6 +1,6 @@
 use crate::cpu::*;
 use crate::peripherals::*;
-const TICK_PER_FRAME: usize = 30;
+const TICK_PER_FRAME: usize = 10;
 pub struct Emulator {
     cpu: CPU,
     peripherals: Peripheral,
@@ -20,6 +20,7 @@ impl Emulator {
         let mut should_break = false;
         let mut key_pressed_down: usize = 0;
         let mut key_pressed_up: usize = 0;
+        let mut sound_timer_done = false;
         loop {
             self.peripherals.handle_event(
                 &mut should_break,
@@ -28,9 +29,11 @@ impl Emulator {
             );
             if key_pressed_down != 0 {
                 self.cpu.keypress(key_pressed_down, true);
+                key_pressed_down = 0;
             }
             if key_pressed_up != 0 {
                 self.cpu.keypress(key_pressed_up, false);
+                key_pressed_up = 0;
             }
             if should_break {
                 break;
@@ -39,7 +42,12 @@ impl Emulator {
                 self.cpu.tick();
             }
             self.peripherals.draw_screen(&self.cpu.get_display());
-            self.cpu.tick_timers();
+
+            self.cpu.tick_timers(&mut sound_timer_done);
+            if sound_timer_done {
+                self.peripherals.beep();
+                sound_timer_done = false;
+            }
         }
     }
 }
