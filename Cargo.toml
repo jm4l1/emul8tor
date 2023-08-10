@@ -1,5 +1,5 @@
 [package]
-name = "chip8-emulator"
+name = "emul8tor"
 version = "0.1.0"
 edition = "2021"
 
