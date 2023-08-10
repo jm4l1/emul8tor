@@ -1,6 +1,6 @@
 use crate::cpu::*;
 use crate::peripherals::*;
-const TICK_PER_FRAME: usize = 10;
+const TICK_PER_FRAME: usize = 30;
 pub struct Emulator {
     cpu: CPU,
     peripherals: Peripheral,
