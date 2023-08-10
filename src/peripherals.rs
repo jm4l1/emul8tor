@@ -180,9 +180,14 @@ impl Peripheral {
     }
     pub fn beep(&self) {
         if self.speaker.is_some() {
-            self.speaker.as_ref().unwrap().resume();
-            std::thread::sleep(std::time::Duration::from_millis(50));
-            self.speaker.as_ref().unwrap().pause();
+            match &self.speaker {
+                Some(speaker) => {
+                    speaker.resume();
+                    std::thread::sleep(std::time::Duration::from_millis(50));
+                    speaker.pause();
+                }
+                None => {}
+            };
         }
     }
 }
