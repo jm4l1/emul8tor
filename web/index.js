@@ -1,4 +1,4 @@
-import init, * as wasm from './libemulator.js'
+import init, * as wasm from './pkg/libemulator.js'
 
 const WIDTH = 64;
 const HEIGHT = 32;
@@ -44,23 +44,19 @@ const run = async () => {
 run();
 
 function mainLoop(emulator) {
-  // Only draw   every few ticks
   for (let i = 0; i < TICKS_PER_FRAME; i++) {
     emulator.tick()
   }
   if (emulator.tick_timers()) {
     beep();
   }
-  // Clear the canvas before drawing
-  ctx.fillStyle = 'black'
-  ctx.fillRect(0, 0, WIDTH * SCALE, HEIGHT * SCALE)
-  // //Set the draw color back to white before we render our frame
-  ctx.fillStyle = 'white'
-  emulator.draw_screen(SCALE)
-  anim_frame = window.requestAnimationFrame(() => mainLoop(emulator))
+  ctx.fillStyle = 'black';
+  ctx.fillRect(0, 0, WIDTH * SCALE, HEIGHT * SCALE);
+  ctx.fillStyle = 'white';
+  emulator.draw_screen(SCALE);
+  anim_frame = window.requestAnimationFrame(() => mainLoop(emulator));
 }
 
 function beep() {
   snd.play();
 }
-beep();
