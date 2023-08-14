@@ -2,6 +2,12 @@
 
 Implementation of [CHIP-8](https://en.wikipedia.org/wiki/CHIP-8) virtual machine.
 
+### Supported Systems
+|OS|Tested|Working|
+|--|--|--|
+|Mac OS|✅|✅|
+|Windows|✅|✅|
+|Linux|❌|❓|
 ### Structure
 
 The project is made up for the following folder
