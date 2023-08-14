@@ -5,7 +5,8 @@ use std::path::Path;
 pub fn main() {
     let args: Vec<String> = std::env::args().collect();
     let rom_path = args.get(1).expect("Unable to find file");
-    let mut emulator: emul8tor::emulator::Emulator = emul8tor::emulator::Emulator::new();
+    let mut emulator: desktop_emul8tor::emulator::Emulator =
+        desktop_emul8tor::emulator::Emulator::new();
     let rom = OpenOptions::new()
         .read(true)
         .open(Path::new(rom_path))

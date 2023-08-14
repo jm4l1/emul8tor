@@ -1,5 +1,6 @@
-use crate::cpu::*;
 use crate::peripherals::*;
+use libchip8cpu::*;
+
 const TICK_PER_FRAME: usize = 30;
 pub struct Emulator {
     cpu: CPU,
