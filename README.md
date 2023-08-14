@@ -5,15 +5,15 @@ Implementation of [CHIP-8](https://en.wikipedia.org/wiki/CHIP-8) virtual machine
 ### Structure
 
 The project is made up for the following folder
-- [Core](../emul8tor/core/) : The implementation of the  CHIP-8 CPU. This handles the low level command execution and management of the low level components (registers, memory, stack etc.). It exposes an interface for loading ROMs into the CPU, stepping through the execution, and getting the display buffer to render on a screen. The display functionality is decoupled from CPU to allow different video libraries.
+- [Core](./core/) : The implementation of the  CHIP-8 CPU. This handles the low level command execution and management of the low level components (registers, memory, stack etc.). It exposes an interface for loading ROMs into the CPU, stepping through the execution, and getting the display buffer to render on a screen. The display functionality is decoupled from CPU to allow different video libraries.
 
-- [Desktop](../emul8tor/desktop/): This models a native emulator and it uses SDL for rendering the display. It has `core` as a dependency and it creates a CPU object and peripherals for display and sound.
+- [Desktop](./desktop/): This models a native emulator and it uses SDL for rendering the display. It has `core` as a dependency and it creates a CPU object and peripherals for display and sound.
 
-- [Wasm emulator](../emul8tor/wasm_emulator/): This models a web based emulator and is similar to `desktop` but it creates a canvas context for rendering rather than SDL.
+- [Wasm emulator](./wasm_emulator/): This models a web based emulator and is similar to `desktop` but it creates a canvas context for rendering rather than SDL.
 
-- [Web](../emul8tor/web/): Contains the web components for running the wasm module in a web browser.
+- [Web](./web/): Contains the web components for running the wasm module in a web browser.
 
-- [Roms](../emul8tor/roms/): Contains roms that can be loaded into the emulator.
+- [Roms](./roms/): Contains roms that can be loaded into the emulator.
 ### Differences between `desktop` and `wasm_emulator`
 In desktop, the main type exported is an `Emulator`, this contains a `CPU` and `Peripherals`. The execution logic is contained within the emulator and the call through `start()`. wasm_emulator exposes a a typed called `WasmEmu` which contains a `CPU` and a `Context`.It does not however implement the execution logic, but rather exposes thin abstractions to the `CPU` allowing for the owner of the `WasmEmu` to implemented its own execution loop. This is allows `Javascript` to execute the loop in the browser. 
 
