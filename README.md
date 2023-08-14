@@ -21,7 +21,7 @@ In desktop, the `tick_timers()` function accepts a reference to a boolean specif
 
 ### Dependencies
 - rust toolchain [Installation instructions here](https://www.rust-lang.org/tools/install)
-- SDL2 [Installation Instructions here](https://github.com/Rust-SDL2/rust-sdl2#sdl20-development-libraries)
+- SDL2 [Installation Instructions here](https://github.com/Rust-SDL2/rust-sdl2#sdl20-development-libraries) , SDL development libraries are [here](https://github.com/libsdl-org/SDL/releases) (for windows.)
 - wasm-pack [installation instructions here](https://rustwasm.github.io/wasm-pack/installer/)
 - python (optional for running local server)
 
@@ -51,8 +51,8 @@ To run wasm
 ```shell
 > cd wasm_emulator
 > wasm-pack build --target web # this creates ./pkg folder
-> mv ./pkg web/pkg
-> cd web 
+> mv ./pkg ../web/pkg
+> cd ../web 
 > python -m http.server
 ```
 Once the server is running, navigate to the `http://localhost:8080/`.
