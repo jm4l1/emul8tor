@@ -1,18 +1,68 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Emul8tor</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Emul8tor</title>
+  <script charset="utf-8" src="./bootstrap.js"></script>
+  <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
-    <div style="display: flex;flex-direction: column;">
-        <canvas  style="margin-bottom: 5px;height: 320px;width: 640px;;" id="display_stage">Sorry no html5 for you 😔</canvas>
-        <div>
-            <label for="fileinput">Select a Rom</label>
-            <input type="file" id="rom_select">
-        </div>
+  <div id="main">
+    <div id="heading">
+      <h1>Chip-8</h1>
     </div>
+    <div id="emulator">
+      <div id="screen">
+        <canvas class="crt" id="display_stage" height="320" width="640">Sorry no html5 for you 😔</canvas>
+      </div>
+      <div id="side-panel">
+        <div id="keypad">
+          <div class="keypad-row">
+            <div class="key" id="key-1">1</div>
+            <div class="key" id="key-2">2</div>
+            <div class="key" id="key-3">3</div>
+            <div class="key" id="key-4">C</div>
+          </div>
+          <div class="keypad-row">
+            <div class="key" id="key-Q">4</div>
+            <div class="key" id="key-W">5</div>
+            <div class="key" id="key-E">6</div>
+            <div class="key" id="key-R">D</div>
+          </div>
+          <div class="keypad-row">
+            <div class="key" id="key-A">7</div>
+            <div class="key" id="key-S">8</div>
+            <div class="key" id="key-D">9</div>
+            <div class="key" id="key-F">E</div>
+          </div>
+          <div class="keypad-row">
+            <div class="key" id="key-Z">A</div>
+            <div class="key" id="key-X">0</div>
+            <div class="key" id="key-C">B</div>
+            <div class="key" id="key-V">F</div>
+          </div>
+        </div>
+        <div>
+          <label for="rom_select">
+            <span class="glyphicon glyphicon-folder-open" aria-hidden="true" id="rom_file">-------- Select a Rom
+              ---------</span>
+            <input type="file" id="rom_select" hidden>
+          </label>
+
+        </div>
+        <div id="controls">
+          <button class="control" id="pause">Pause</button>
+          <button class="control" id="reset">Reset</button>
+          <button class="control" id="stop">Stop</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="bootstrap.js"></script>
 </body>
-<script type="module" src="index.js"></script>
+
 </html>
